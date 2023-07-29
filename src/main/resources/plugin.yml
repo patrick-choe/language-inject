@@ -1,0 +1,6 @@
+name: LanguageInject
+main: io.github.patrick.languageinject.LanguageInjectPlugin
+version: 1.0-SNAPSHOT
+author: PatrickKR
+load: STARTUP
+api-version: 1.16
