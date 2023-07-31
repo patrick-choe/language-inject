@@ -1,11 +1,5 @@
 val parentProject = project
 
-allprojects {
-    dependencies {
-        implementation(rootProject)
-    }
-}
-
 subprojects {
     val minecraftVersion = name.substring(1)
 
@@ -14,6 +8,7 @@ subprojects {
     }
 
     dependencies {
+        implementation(rootProject)
         implementation(parentProject)
         implementation("org.spigotmc:spigot:$minecraftVersion-R0.1-SNAPSHOT:remapped-mojang")
     }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2023 PatrickKR
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.patrick.languageinject.impl;
 
 import com.google.gson.JsonElement;
@@ -6,7 +22,6 @@ import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,9 +39,9 @@ public class LanguageLoaderUtil {
         return bidirectionalLanguages.contains(language);
     }
 
-    public static File loadLanguageFile(File rootFolder, String version, String language) {
-        File versionFile = new File(rootFolder, "version/" + version + ".json");
-        File languageFile = new File(rootFolder, "language/" + version + "-" + language + ".json");
+    public static File loadLanguageFile(File dataFolder, String version, String language) {
+        File versionFile = new File(dataFolder, "version/" + version + ".json");
+        File languageFile = new File(dataFolder, "language/" + version + "-" + language + ".json");
 
         try {
             FileUtils.createParentDirectories(versionFile);
@@ -49,7 +64,7 @@ public class LanguageLoaderUtil {
     private static void downloadLanguageFile(File languageFile, File versionFile, String language) {
         JsonObject assets;
 
-        try (InputStream inputStream = new FileInputStream(versionFile)) {
+        try (InputStream inputStream = FileUtils.openInputStream(versionFile)) {
             assets = copyStreamToJsonObject(inputStream).getAsJsonObject("objects");
         } catch (IOException exception) {
             throw new RuntimeException("Cannot open stream from file '" + versionFile.getPath() + "'.", exception);
