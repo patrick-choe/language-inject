@@ -71,10 +71,15 @@ public class LanguageLoaderUtil {
         }
 
         String path = "minecraft/lang/" + language + ".json";
-        String hash = assets.getAsJsonObject(path).getAsJsonPrimitive("hash").getAsString();
-        String url = RESOURCE_BASE_URL + "/" + hash.substring(0, 2) + "/" + hash;
 
-        downloadFile(url, languageFile);
+        if (assets.has(path)) {
+            String hash = assets.getAsJsonObject(path).getAsJsonPrimitive("hash").getAsString();
+            String url = RESOURCE_BASE_URL + "/" + hash.substring(0, 2) + "/" + hash;
+
+            downloadFile(url, languageFile);
+        } else {
+            throw new RuntimeException("Cannot find language named '" + language + "'.");
+        }
     }
 
     private static void downloadVersionFile(File versionFile, String version) {
