@@ -38,9 +38,15 @@ import java.util.Optional;
 
 public class LanguageLoaderImpl implements ILanguageLoader {
     Language defaultLanguage = Language.getInstance();
+    private static final String DEFAULT_LANGUAGE_NAME = "en_us";
 
     @Override
     public void loadLanguage(String language) {
+        if (language.equals(DEFAULT_LANGUAGE_NAME)) {
+            Language.inject(defaultLanguage);
+            return;
+        }
+
         File dataFolder = LanguageInjectPlugin.instance.getDataFolder();
         File file = LanguageLoaderUtil.loadLanguageFile(dataFolder, SharedConstants.getCurrentVersion().getName(), language);
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
